@@ -4,13 +4,15 @@ public class Todo {
   private int id;
   private String title;
   private boolean completed;
+  private String category;
 
   public Todo() {
   }
 
-  public Todo(String title, boolean completed) {
+  public Todo(String title, boolean completed, String category) {
     this.title = title;
     this.completed = completed;
+    this.category = category;
   }
 
   // Getters y setters
@@ -36,5 +38,13 @@ public class Todo {
 
   public void setCompleted(boolean completed) {
     this.completed = completed;
+  }
+
+  public String getCategory() {
+    return category;
+  }
+
+  public void setCategory(String category) {
+    this.category = category;
   }
 }

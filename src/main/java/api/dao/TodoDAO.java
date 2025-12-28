@@ -21,6 +21,7 @@ public class TodoDAO {
         t.setId(rs.getInt("id"));
         t.setTitle(rs.getString("title"));
         t.setCompleted(rs.getBoolean("completed"));
+        t.setCategory(rs.getString("category"));
         todos.add(t);
       }
     }
@@ -38,6 +39,7 @@ public class TodoDAO {
         t.setId(rs.getInt("id"));
         t.setTitle(rs.getString("title"));
         t.setCompleted(rs.getBoolean("completed"));
+        t.setCompleted(rs.getBoolean("category"));
         return t;
       }
     }
@@ -45,11 +47,12 @@ public class TodoDAO {
   }
 
   public Todo create(Todo todo) throws SQLException {
-    String sql = "INSERT INTO todo(title, completed) VALUES(?, ?)";
+    String sql = "INSERT INTO todo(title, completed, category) VALUES(?, ?, ?)";
     try (Connection conn = DBConnection.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
       ps.setString(1, todo.getTitle());
       ps.setBoolean(2, todo.isCompleted());
+      ps.setString(3, todo.getCategory());
       ps.executeUpdate();
       ResultSet rs = ps.getGeneratedKeys();
       if (rs.next()) {
@@ -60,12 +63,14 @@ public class TodoDAO {
   }
 
   public boolean update(Todo todo) throws SQLException {
-    String sql = "UPDATE todo SET title = ?, completed = ? WHERE id = ?";
+    String sql = "UPDATE todo SET title = ?, completed = ?, category = ?, WHERE id = ?";
     try (Connection conn = DBConnection.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
       ps.setString(1, todo.getTitle());
       ps.setBoolean(2, todo.isCompleted());
+      ps.setString(3, todo.getCategory());
       ps.setInt(3, todo.getId());
+
       return ps.executeUpdate() > 0;
     }
   }
