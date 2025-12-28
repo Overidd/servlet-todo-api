@@ -24,7 +24,7 @@ public class TodoDAO {
         Todo t = new Todo();
         t.setId(rs.getInt("id"));
         t.setTitle(rs.getString("title"));
-        t.setCompleted(rs.getBoolean("completed"));
+        t.setCompleted(rs.getString("completed"));
         t.setCategory(rs.getString("category"));
         t.setUserId(rs.getInt("user_id"));
         todos.add(t);
@@ -47,7 +47,7 @@ public class TodoDAO {
         Todo t = new Todo();
         t.setId(rs.getInt("id"));
         t.setTitle(rs.getString("title"));
-        t.setCompleted(rs.getBoolean("completed"));
+        t.setCompleted(rs.getString("completed"));
         t.setCategory(rs.getString("category"));
         t.setUserId(rs.getInt("user_id"));
         return t;
@@ -63,7 +63,7 @@ public class TodoDAO {
          PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
       ps.setString(1, todo.getTitle());
-      ps.setBoolean(2, todo.isCompleted());
+      ps.setString(2, todo.isCompleted());
       ps.setString(3, todo.getCategory());
       ps.setInt(4, userId);
 
@@ -82,17 +82,17 @@ public class TodoDAO {
     String sql = """
       UPDATE todo
       SET title = ?, completed = ?, category = ?
-      WHERE id = ? AND user_id = ?
+      WHERE id = ?
     """;
 
     try (Connection conn = DBConnection.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
 
       ps.setString(1, todo.getTitle());
-      ps.setBoolean(2, todo.isCompleted());
+      ps.setString(2, todo.isCompleted());
       ps.setString(3, todo.getCategory());
       ps.setInt(4, todo.getId());
-      ps.setInt(5, userId);
+//      ps.setInt(5, userId);
 
       return ps.executeUpdate() > 0;
     }

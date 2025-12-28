@@ -110,7 +110,7 @@ public class AuthServlet extends HttpServlet {
       );
       return;
     }
-
+  System.out.println(JsonUtil.toJson(user));
     String token = JwtUtil.generateToken(user.getId(),user.getEmail());
 
     Map<String, Object> userJson = new HashMap<>();

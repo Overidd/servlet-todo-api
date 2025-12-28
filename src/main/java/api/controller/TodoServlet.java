@@ -30,7 +30,6 @@ public class TodoServlet extends HttpServlet {
 
     try {
       if (path == null || path.equals("/")) {
-        // 🔐 todos del usuario
         List<Todo> todos = todoDAO.getAllByUser(userId);
         JsonUtil.toJson(response, todos);
       } else {
@@ -87,9 +86,10 @@ public class TodoServlet extends HttpServlet {
       if (updated) {
         JsonUtil.toJson(response, todo);
       } else {
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN); // 🔐 no pertenece
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
       }
     } catch (SQLException e) {
+      System.out.print(e);
       response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
       e.printStackTrace();
     }

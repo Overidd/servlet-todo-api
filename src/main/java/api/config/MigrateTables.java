@@ -23,7 +23,7 @@ public class MigrateTables {
         "CREATE TABLE IF NOT EXISTS todo (" +
             "id INT AUTO_INCREMENT PRIMARY KEY," +
             "title VARCHAR(255) NOT NULL," +
-            "completed BOOLEAN DEFAULT FALSE," +
+            "completed VARCHAR(255) NOT NULL," +
             "category VARCHAR(100) NOT NULL," +
             "user_id INT NOT NULL," +
             "FOREIGN KEY (user_id) REFERENCES users(id)" +

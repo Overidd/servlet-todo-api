@@ -4,14 +4,14 @@ public class Todo {
 
   private int id;
   private String title;
-  private boolean completed;
+  private String completed;
   private String category;
   private int userId; // 👈 nuevo campo
 
   public Todo() {
   }
 
-  public Todo(String title, boolean completed, String category, int userId) {
+  public Todo(String title, String completed, String category, int userId) {
     this.title = title;
     this.completed = completed;
     this.category = category;
@@ -36,11 +36,11 @@ public class Todo {
     this.title = title;
   }
 
-  public boolean isCompleted() {
+  public String isCompleted() {
     return completed;
   }
 
-  public void setCompleted(boolean completed) {
+  public void setCompleted(String completed) {
     this.completed = completed;
   }
 

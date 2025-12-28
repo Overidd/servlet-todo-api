@@ -15,8 +15,10 @@ public class JwtUtil {
   private static final Algorithm ALGORITHM = Algorithm.HMAC256(SECRET);
 
   public static String generateToken(int userId, String email) {
+    System.out.print("email" + email);
     return JWT.create()
         .withClaim("id", userId)
+        .withClaim("email",email)
         .withSubject(email)
         .withIssuedAt(new Date())
         .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
