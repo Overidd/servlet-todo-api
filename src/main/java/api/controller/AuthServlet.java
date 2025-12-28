@@ -1,5 +1,6 @@
 package api.controller;
 
+import api.dao.TodoDAO;
 import api.dao.UserDAO;
 import api.model.User;
 import api.util.ErrorUtil;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 @WebServlet("/api/auth/*")
@@ -65,16 +67,32 @@ public class AuthServlet extends HttpServlet {
   private void register(Map<String, String> body,
                         HttpServletResponse resp) throws Exception {
 
+    resp.setContentType("application/json");
+
     User user = new User();
     user.setEmail(body.get("email"));
     user.setName(body.get("name"));
     user.setPassword(PasswordUtil.hash(body.get("password")));
+
     userDAO.save(user);
 
+    String token = JwtUtil.generateToken(user.getEmail());
+
+    Map<String, Object> userJson = new HashMap<>();
+    userJson.put("id", user.getId());
+    userJson.put("email", user.getEmail());
+    userJson.put("name", user.getName());
+
+    resp.setStatus(HttpServletResponse.SC_CREATED);
     resp.getWriter().write(
-        JsonUtil.toJson(Map.of("message", "Usuario registrado"))
+        JsonUtil.toJson(Map.of(
+            "message", "Usuario registrado",
+            "token", token,
+            "user", userJson
+        ))
     );
   }
+
 
   private void login(Map<String, String> body,
                      HttpServletResponse resp) throws Exception {
@@ -84,7 +102,8 @@ public class AuthServlet extends HttpServlet {
     if (user == null ||
         !PasswordUtil.verify(body.get("password"), user.getPassword())) {
 
-      resp.setStatus(401);
+      resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+      resp.setContentType("application/json");
       resp.getWriter().write(
           JsonUtil.toJson(Map.of("error", "Credenciales inválidas"))
       );
@@ -93,26 +112,63 @@ public class AuthServlet extends HttpServlet {
 
     String token = JwtUtil.generateToken(user.getEmail());
 
-    resp.getWriter().write(
-        JsonUtil.toJson(Map.of("message", "Login exitoso", "token", token))
-    );
+    Map<String, Object> userJson = new HashMap<>();
+    userJson.put("id", user.getId());
+    userJson.put("email", user.getEmail());
+    userJson.put("name", user.getName());
+
+    Map<String, Object> response = new HashMap<>();
+    response.put("message", "Login exitoso");
+    response.put("token", token);
+    response.put("user", userJson);
+
+    resp.setStatus(HttpServletResponse.SC_OK);
+    resp.setContentType("application/json");
+    resp.getWriter().write(JsonUtil.toJson(response));
   }
 
-  private void verifyToken(Map<String, String> body, HttpServletResponse resp) throws IOException {
-    String token = body.get("token");
+  private void verifyToken(Map<String, String> body,
+                           HttpServletResponse resp) throws IOException {
 
-    if (token == null || token.isEmpty()) {
+    String token = body.get("token");
+    resp.setContentType("application/json");
+
+    if (token == null || token.trim().isEmpty()) {
       resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-      resp.getWriter().write(JsonUtil.toJson(Map.of("error", "Token no proporcionado")));
+      resp.getWriter().write(
+          JsonUtil.toJson(Map.of("error", "Token no proporcionado"))
+      );
       return;
     }
 
     try {
       String email = JwtUtil.validateToken(token);
 
+      TodoDAO dao = new TodoDAO();
+      User user = dao.getUserByEmail(email);
+
+      if (user == null) {
+        resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        resp.getWriter().write(
+            JsonUtil.toJson(Map.of("error", "Usuario no existe"))
+        );
+        return;
+      }
+
+      Map<String, Object> userJson = new HashMap<>();
+      userJson.put("id", user.getId());
+      userJson.put("email", user.getEmail());
+      userJson.put("name", user.getName());
+
+      resp.setStatus(HttpServletResponse.SC_OK);
       resp.getWriter().write(
-          JsonUtil.toJson(Map.of("message", "Token válido", "email", email))
+          JsonUtil.toJson(Map.of(
+              "message", "Token válido",
+              "token", token,
+              "user", userJson
+          ))
       );
+
     } catch (Exception e) {
       resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       resp.getWriter().write(
@@ -120,5 +176,6 @@ public class AuthServlet extends HttpServlet {
       );
     }
   }
+
 
 }

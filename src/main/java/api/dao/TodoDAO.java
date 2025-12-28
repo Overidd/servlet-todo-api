@@ -2,6 +2,7 @@ package api.dao;
 
 import api.config.DBConnection;
 import api.model.Todo;
+import api.model.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -85,4 +86,26 @@ public class TodoDAO {
       return stmt.executeUpdate(sql);
     }
   }
+
+  public User getUserByEmail(String email) throws SQLException {
+    String sql = "SELECT id, email, name, password FROM users WHERE email = ?";
+
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+      ps.setString(1, email);
+      ResultSet rs = ps.executeQuery();
+
+      if (rs.next()) {
+        User user = new User();
+        user.setId(rs.getInt("id"));
+        user.setEmail(rs.getString("email"));
+        user.setName(rs.getString("name"));
+        user.setPassword(rs.getString("password"));
+        return user;
+      }
+    }
+    return null;
+  }
+
 }
