@@ -30,7 +30,6 @@ public class TodoFilter implements Filter {
     res.setHeader("Access-Control-Max-Age", "3600");
     res.setContentType("application/json");
 
-
     if ("OPTIONS".equalsIgnoreCase(req.getMethod())) {
       res.setStatus(HttpServletResponse.SC_OK);
       return;
@@ -42,21 +41,19 @@ public class TodoFilter implements Filter {
       String token = authHeader.substring(7);
 
       try {
-        String email = JwtUtil.validateToken(token);
+        int userId = JwtUtil.getUserId(token);
 
-        if (email != null && !email.isEmpty()) {
-          chain.doFilter(request, response);
-          return;
-        }
+        req.setAttribute("userId", userId);
+
+        chain.doFilter(request, response);
+        return;
 
       } catch (JWTVerificationException e) {
       }
     }
 
     res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-    res.getWriter().write(
-        "{\"error\": \"Token inválido o no proporcionado\"}"
-    );
+    res.getWriter().write("{\"error\": \"Token inválido o no proporcionado\"}");
   }
 
   @Override

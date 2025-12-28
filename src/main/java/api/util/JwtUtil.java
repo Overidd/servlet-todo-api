@@ -9,21 +9,33 @@ import java.util.Date;
 
 public class JwtUtil {
 
-  private static final String SECRET = "miSuperSecreto123"; // cambiar por algo seguro
-  private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hora
+  private static final String SECRET = "miSuperSecreto123";
+  private static final long EXPIRATION_TIME = 1000 * 60 * 60;
 
-  public static String generateToken(String email) {
+  private static final Algorithm ALGORITHM = Algorithm.HMAC256(SECRET);
+
+  public static String generateToken(int userId, String email) {
     return JWT.create()
+        .withClaim("id", userId)
         .withSubject(email)
         .withIssuedAt(new Date())
         .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-        .sign(Algorithm.HMAC256(SECRET));
+        .sign(ALGORITHM);
   }
 
-  public static String validateToken(String token) throws JWTVerificationException {
-    DecodedJWT jwt = JWT.require(Algorithm.HMAC256(SECRET))
+  public static int getUserId(String token) throws JWTVerificationException {
+    DecodedJWT jwt = JWT.require(ALGORITHM)
         .build()
         .verify(token);
+
+    return jwt.getClaim("id").asInt();
+  }
+
+  public static String getEmail(String token) throws JWTVerificationException {
+    DecodedJWT jwt = JWT.require(ALGORITHM)
+        .build()
+        .verify(token);
+
     return jwt.getSubject();
   }
 }

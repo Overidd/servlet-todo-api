@@ -74,12 +74,13 @@ public class AuthServlet extends HttpServlet {
     user.setName(body.get("name"));
     user.setPassword(PasswordUtil.hash(body.get("password")));
 
-    userDAO.save(user);
+     userDAO.save(user);
+     User newuser = userDAO.findByEmail(user.getEmail());
 
-    String token = JwtUtil.generateToken(user.getEmail());
+    String token = JwtUtil.generateToken(user.getId(), user.getEmail());
 
     Map<String, Object> userJson = new HashMap<>();
-    userJson.put("id", user.getId());
+    userJson.put("id", newuser.getId());
     userJson.put("email", user.getEmail());
     userJson.put("name", user.getName());
 
@@ -110,7 +111,7 @@ public class AuthServlet extends HttpServlet {
       return;
     }
 
-    String token = JwtUtil.generateToken(user.getEmail());
+    String token = JwtUtil.generateToken(user.getId(),user.getEmail());
 
     Map<String, Object> userJson = new HashMap<>();
     userJson.put("id", user.getId());
@@ -142,7 +143,7 @@ public class AuthServlet extends HttpServlet {
     }
 
     try {
-      String email = JwtUtil.validateToken(token);
+      String email = JwtUtil.getEmail(token);
 
       TodoDAO dao = new TodoDAO();
       User user = dao.getUserByEmail(email);

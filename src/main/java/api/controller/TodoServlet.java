@@ -22,15 +22,21 @@ public class TodoServlet extends HttpServlet {
   private final TodoDAO todoDAO = new TodoDAO();
 
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String path = request.getPathInfo(); // /{id} o null
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+
+    int userId = getUserId(request);
+    String path = request.getPathInfo();
+
     try {
       if (path == null || path.equals("/")) {
-        List<Todo> todos = todoDAO.getAll();
+        // 🔐 todos del usuario
+        List<Todo> todos = todoDAO.getAllByUser(userId);
         JsonUtil.toJson(response, todos);
       } else {
-        int id = Integer.parseInt(path.substring(1));
-        Todo todo = todoDAO.getById(id);
+        int todoId = Integer.parseInt(path.substring(1));
+        Todo todo = todoDAO.getById(todoId, userId);
+
         if (todo != null) {
           JsonUtil.toJson(response, todo);
         } else {
@@ -44,10 +50,14 @@ public class TodoServlet extends HttpServlet {
   }
 
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+
+    int userId = getUserId(request);
+
     try {
       Todo todo = JsonUtil.fromJson(request, Todo.class);
-      Todo created = todoDAO.create(todo);
+      Todo created = todoDAO.create(todo, userId);
       JsonUtil.toJson(response, created);
     } catch (SQLException e) {
       response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -56,21 +66,28 @@ public class TodoServlet extends HttpServlet {
   }
 
   @Override
-  protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doPut(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+
+    int userId = getUserId(request);
     String path = request.getPathInfo();
+
     if (path == null || path.equals("/")) {
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       return;
     }
-    int id = Integer.parseInt(path.substring(1));
+
+    int todoId = Integer.parseInt(path.substring(1));
+
     try {
       Todo todo = JsonUtil.fromJson(request, Todo.class);
-      todo.setId(id);
-      boolean updated = todoDAO.update(todo);
+      todo.setId(todoId);
+
+      boolean updated = todoDAO.update(todo, userId);
       if (updated) {
         JsonUtil.toJson(response, todo);
       } else {
-        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN); // 🔐 no pertenece
       }
     } catch (SQLException e) {
       response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -79,95 +96,37 @@ public class TodoServlet extends HttpServlet {
   }
 
   @Override
-  protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    response.setContentType("application/json");
+  protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+
+    int userId = getUserId(request);
     String path = request.getPathInfo();
 
     try {
       if (path == null || path.equals("/")) {
-        int count = todoDAO.deleteAll();
+        int count = todoDAO.deleteAllByUser(userId);
         Map<String, Object> result = new HashMap<>();
         result.put("deleted", count);
         JsonUtil.toJson(response, result);
       } else {
-        int id = Integer.parseInt(path.substring(1));
-        boolean deleted = todoDAO.delete(id);
+        int todoId = Integer.parseInt(path.substring(1));
+        boolean deleted = todoDAO.delete(todoId, userId);
+
         if (deleted) {
           Map<String, Object> result = new HashMap<>();
           result.put("deleted", 1);
           JsonUtil.toJson(response, result);
         } else {
-          response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-          response.getWriter().write("{\"error\": \"Todo no encontrado\"}");
+          response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         }
       }
-    } catch (NumberFormatException e) {
-      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-      response.getWriter().write("{\"error\": \"ID inválido\"}");
     } catch (SQLException e) {
       response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
       e.printStackTrace();
     }
   }
 
-
-  protected void deleteId(HttpServletRequest request, HttpServletResponse response) throws
-      ServletException, IOException {
-    String path = request.getPathInfo();
-    if (path == null || path.equals("/")) {
-      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-      response.getWriter().write("{\"error\": \"Debe proporcionar un ID para eliminar\"}");
-      return;
-    }
-
-    try {
-      int id = Integer.parseInt(path.substring(1));
-      boolean deleted = todoDAO.delete(id);
-      if (deleted) {
-        Map<String, Object> result = new HashMap<>();
-        result.put("deleted", 1);
-        JsonUtil.toJson(response, result);
-      } else {
-        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        response.getWriter().write("{\"error\": \"Todo no encontrado\"}");
-      }
-    } catch (NumberFormatException e) {
-      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-      response.getWriter().write("{\"error\": \"ID inválido\"}");
-    } catch (SQLException e) {
-      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-      e.printStackTrace();
-    }
-  }
-
-  protected void deleteAll(HttpServletRequest request, HttpServletResponse response) throws
-      ServletException, IOException {
-    String path = request.getPathInfo();
-
-    try {
-      if (path == null || path.equals("/")) {
-        int count = todoDAO.deleteAll();
-        Map<String, Object> result = new HashMap<>();
-        result.put("deleted", count);
-        JsonUtil.toJson(response, result);
-      } else {
-        int id = Integer.parseInt(path.substring(1));
-        boolean deleted = todoDAO.delete(id);
-        if (deleted) {
-          Map<String, Object> result = new HashMap<>();
-          result.put("deleted", 1);
-          JsonUtil.toJson(response, result);
-        } else {
-          response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-          response.getWriter().write("{\"error\": \"Todo no encontrado\"}");
-        }
-      }
-    } catch (NumberFormatException e) {
-      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-      response.getWriter().write("{\"error\": \"ID inválido\"}");
-    } catch (SQLException e) {
-      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-      e.printStackTrace();
-    }
+  private int getUserId(HttpServletRequest request) {
+    return (int) request.getAttribute("userId");
   }
 }

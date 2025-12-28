@@ -1,21 +1,25 @@
 package api.model;
 
 public class Todo {
+
   private int id;
   private String title;
   private boolean completed;
   private String category;
+  private int userId; // 👈 nuevo campo
 
   public Todo() {
   }
 
-  public Todo(String title, boolean completed, String category) {
+  public Todo(String title, boolean completed, String category, int userId) {
     this.title = title;
     this.completed = completed;
     this.category = category;
+    this.userId = userId;
   }
 
   // Getters y setters
+
   public int getId() {
     return id;
   }
@@ -46,5 +50,14 @@ public class Todo {
 
   public void setCategory(String category) {
     this.category = category;
+  }
+
+  // 👇 nuevos getters/setters
+  public int getUserId() {
+    return userId;
+  }
+
+  public void setUserId(int userId) {
+    this.userId = userId;
   }
 }
