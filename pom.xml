@@ -10,13 +10,11 @@
     <artifactId>todo-api</artifactId>
     <version>1.0.0</version>
 
-    <!-- IMPORTANTE: para proyectos Servlet -->
     <packaging>war</packaging>
 
     <name>Todo API - Servlets</name>
 
     <properties>
-        <!-- Java LTS recomendado -->
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,7 +22,6 @@
 
     <dependencies>
 
-        <!-- Servlet API -->
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
@@ -32,14 +29,12 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Gson -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.10.1</version>
         </dependency>
 
-        <!-- BCrypt -->
         <dependency>
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
@@ -72,7 +67,6 @@
 
         <plugins>
 
-            <!-- Compilador -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
