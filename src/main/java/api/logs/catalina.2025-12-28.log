@@ -1,0 +1,44 @@
+28-Dec-2025 01:17:09.032 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Nombre de la versión del servidor: Apache Tomcat/9.0.112
+28-Dec-2025 01:17:09.039 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:                      Nov 6 2025 07:46:18 UTC
+28-Dec-2025 01:17:09.040 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Número de versión de servidor:     9.0.112.0
+28-Dec-2025 01:17:09.040 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:                           Windows 10
+28-Dec-2025 01:17:09.041 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Versión de Systema Operativo:      10.0
+28-Dec-2025 01:17:09.041 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Arquitectura:                      amd64
+28-Dec-2025 01:17:09.042 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:                         C:\Program Files\Java\jdk-25
+28-Dec-2025 01:17:09.042 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:                       25.0.1+8-LTS-27
+28-Dec-2025 01:17:09.042 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Vededor JVM:                       Oracle Corporation
+28-Dec-2025 01:17:09.042 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:                     D:\JavaProjects\TODO-API\src\main\java\api
+28-Dec-2025 01:17:09.042 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:                     D:\apache-tomcat-9.0.112
+28-Dec-2025 01:17:09.054 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument:             --add-opens=java.base/java.lang=ALL-UNNAMED
+28-Dec-2025 01:17:09.055 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument:             --add-opens=java.base/java.io=ALL-UNNAMED
+28-Dec-2025 01:17:09.055 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument:             --add-opens=java.base/java.util=ALL-UNNAMED
+28-Dec-2025 01:17:09.055 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument:             --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+28-Dec-2025 01:17:09.055 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument:             --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+28-Dec-2025 01:17:09.055 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument:             -Dcatalina.home=D:\apache-tomcat-9.0.112
+28-Dec-2025 01:17:09.055 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument:             -Dcatalina.base=D:\JavaProjects\TODO-API\src\main\java\api
+28-Dec-2025 01:17:09.055 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument:             -Djava.io.tmpdir=D:\JavaProjects\TODO-API\src\main\java\api\temp
+28-Dec-2025 01:17:09.055 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument:             -Djava.util.logging.config.file=D:\JavaProjects\TODO-API\src\main\java\api\conf\logging.properties
+28-Dec-2025 01:17:09.056 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument:             -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+28-Dec-2025 01:17:09.056 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument:             -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2025.2.4\lib\idea_rt.jar=60519
+28-Dec-2025 01:17:09.056 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument:             -Dfile.encoding=UTF-8
+28-Dec-2025 01:17:09.056 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument:             -Dsun.stdout.encoding=UTF-8
+28-Dec-2025 01:17:09.056 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument:             -Dsun.stderr.encoding=UTF-8
+28-Dec-2025 01:17:09.064 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent Cargada la biblioteca nativa APR de Apache Tomcat [1.3.1] con la versión APR [1.7.4].
+28-Dec-2025 01:17:09.064 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent Capacidades APR: IPv6 [true], enviar fichero [true], aceptar filtros [false], aleatorio [true], UDS [true].
+28-Dec-2025 01:17:09.064 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+28-Dec-2025 01:17:09.079 INFO [main] org.apache.catalina.core.AprLifecycleListener.initializeSSL OpenSSL inicializado correctamente [OpenSSL 3.0.14 4 Jun 2024]
+28-Dec-2025 01:17:09.619 INFO [main] org.apache.coyote.AbstractProtocol.init Inicializando el manejador de protocolo ["http-nio-8080"]
+
+28-Dec-2025 01:17:09.652 INFO [main] org.apache.catalina.startup.Catalina.load Server initialization in [941] milliseconds
+28-Dec-2025 01:17:09.713 INFO [main] org.apache.catalina.core.StandardService.startInternal Arrancando servicio [Catalina]
+28-Dec-2025 01:17:09.713 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet engine: [Apache Tomcat/9.0.112]
+28-Dec-2025 01:17:09.731 INFO [main] org.apache.catalina.startup.HostConfig.deployDescriptor Desplieque del descriptor de configuración [D:\JavaProjects\TODO-API\src\main\java\api\conf\Catalina\localhost\webapp.xml]
+28-Dec-2025 01:17:10.058 WARNING [main] org.apache.tomcat.util.descriptor.web.WebXml.setVersion Unknown version string [6.0]. Default version will be used.
+28-Dec-2025 01:17:11.117 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars Al menos un JAR, que se ha explorado buscando TLDs, aún no contenía TLDs. Activar historial de depuración para este historiador para una completa lista de los JARs que fueron explorados y de los que nos se halló TLDs. Saltarse JARs no necesarios durante la exploración puede dar lugar a una mejora de tiempo significativa en el arranque y compilación de JSP .
+28-Dec-2025 01:17:11.210 INFO [main] org.apache.catalina.startup.HostConfig.deployDescriptor Deployment of deployment descriptor [D:\JavaProjects\TODO-API\src\main\java\api\conf\Catalina\localhost\webapp.xml] has finished in [1.466] ms
+28-Dec-2025 01:17:11.215 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
+28-Dec-2025 01:17:11.250 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [1596] milliseconds
+28-Dec-2025 01:17:44.180 INFO [Thread-1] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["http-nio-8080"]
+28-Dec-2025 01:17:44.188 INFO [Thread-1] org.apache.catalina.core.StandardService.stopInternal Parando servicio [Catalina]
+28-Dec-2025 01:17:44.201 INFO [Thread-1] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["http-nio-8080"]
+28-Dec-2025 01:17:44.212 INFO [Thread-1] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["http-nio-8080"]
